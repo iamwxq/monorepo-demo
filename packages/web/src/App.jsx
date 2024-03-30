@@ -1,7 +1,7 @@
 import _ from "lodash";
 
 function App() {
-  async function handleDownload() {
+  const debouncedDownload = _.debounce(async () => {
     try {
       const res = await fetch("http://localhost:8000/download", {
         method: "POST",
@@ -29,7 +29,10 @@ function App() {
     catch (error) {
       console.error(error);
     }
-  }
+  }, 400, {
+    leading: true,
+    trailing: false,
+  });
 
   return (
     <div className="flex h-screen w-full flex-col items-center gap-8">
@@ -39,7 +42,7 @@ function App() {
       <button
         className="rounded-sm bg-slate-300 px-2 py-1 text-slate-700 hover:bg-slate-200 active:bg-slate-300"
         type="button"
-        onClick={handleDownload}
+        onClick={debouncedDownload}
       >
         Download
       </button>
